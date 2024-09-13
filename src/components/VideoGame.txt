@@ -1,0 +1,430 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import LoadingSpinner from "./LoadingSpinner";
+import Error from "./Error";
+
+const VideoGame = () => {
+  const [gameTitle, setGameTitle] = useState("");
+  const [searchedGame, setSearchedGame] = useState([]);
+  const [gameDeals, setGameDeals] = useState([]);
+  const [id, setId] = useState(1);
+  const [loading, setLoading] = useState(false); // For loading state
+  const [error, setError] = useState(null); // For error handling
+
+  const searchGame = () => {
+    setLoading(true); // Start loading
+    setError(null); // Reset error state
+    fetch(`https://www.cheapshark.com/api/1.0/games?title=${gameTitle}&limit=4`)
+      .then((response) => response.json())
+      .then((data) => {
+        setSearchedGame(data);
+        setLoading(false); // End loading
+      })
+      .catch((err) => {
+        setError("Something went wrong. Please try again.");
+        setLoading(false); // End loading
+      });
+  };
+
+  useEffect(() => {
+    setLoading(true); // Start loading
+    setError(null); // Reset error state
+    fetch(
+      `https://www.cheapshark.com/api/1.0/deals?storeID=${id}&upperPrice=10&pageSize=10`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setGameDeals(data);
+        setLoading(false); // End loading
+      })
+      .catch((err) => {
+        setError(true);
+        setLoading(false); // End loading
+      });
+  }, [id]);
+
+  return (
+    <>
+      <div className="overflow-x-auto">
+        <input
+          type="text"
+          placeholder="Search for a game..."
+          onChange={(e) => setGameTitle(e.target.value)}
+        />
+        <button onClick={searchGame}>Search</button>
+
+        {/* Display error message if any */}
+        {error && <Error />}
+
+        {/* Display loading spinner */}
+        {loading && <LoadingSpinner />}
+
+        {!loading && !error && (
+          <table className="table">
+            {/* Table Head */}
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Game ID</th>
+                <th>Cheapest Price</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Loop through searchedGame data */}
+              {searchedGame.map((game) => (
+                <tr key={game.gameID}>
+                  <th>
+                    <input type="checkbox" className="checkbox" />
+                  </th>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img src={game.thumb} alt={game.external} />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">{game.external}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{game.gameID}</td>
+                  <td>{game.cheapest}$</td>
+                  <th>
+                    <Link to="/details">
+                      <button className="btn btn-ghost btn-xs">Details</button>
+                    </Link>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+            {/* Table Footer */}
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Game ID</th>
+                <th>Cheapest Price</th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default VideoGame;
+
+
+.........................................
+...............................
+..........................
+
+
+
+
+
+
+import { useState, useEffect } from "react";
+
+import LoadingSpinner from "./LoadingSpinner";
+import Error from "./Error";
+
+const VideoGame = () => {
+  const [gameTitle, setGameTitle] = useState("");
+  const [searchedGame, setSearchedGame] = useState([]);
+  const [gameDeals, setGameDeals] = useState([]);
+  const [id, setId] = useState(1);
+  const [loading, setLoading] = useState(false); // For loading state
+  const [error, setError] = useState(null); // For error handling
+
+  const searchGame = () => {
+    setLoading(true); // Start loading
+    setError(null); // Reset error state
+    fetch(`https://www.cheapshark.com/api/1.0/games?title=${gameTitle}&limit=4`)
+      .then((response) => response.json())
+      .then((data) => {
+        setSearchedGame(data);
+        setLoading(false); // End loading
+      })
+      .catch((err) => {
+        setError(true);
+        setLoading(false); // End loading
+      });
+  };
+
+  useEffect(() => {
+    setLoading(true); // Start loading
+    setError(null); // Reset error state
+    fetch(
+      `https://www.cheapshark.com/api/1.0/deals?storeID=${id}&upperPrice=10&pageSize=10`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setGameDeals(data);
+        setLoading(false); // End loading
+      })
+      .catch((err) => {
+        setError(true);
+        setLoading(false); // End loading
+      });
+  }, [id]);
+
+  return (
+    <>
+      <div className="overflow-x-auto">
+        <input
+          type="text"
+          placeholder="Search for a game..."
+          onChange={(e) => setGameTitle(e.target.value)}
+        />
+        <button onClick={searchGame}>Search</button>
+
+        {/* Display error message if any */}
+        {error && <Error />}
+
+        {/* Display loading spinner */}
+        {loading && <LoadingSpinner />}
+
+        {!loading && !error && (
+          <table className="table">
+            {/* Table Head */}
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Game ID</th>
+                <th>Cheapest Price</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Loop through searchedGame data */}
+              {searchedGame.map((game) => (
+                <tr key={game.gameID}>
+                  <th>
+                    <input type="checkbox" className="checkbox" />
+                  </th>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img src={game.thumb} alt={game.external} />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">{game.external}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{game.gameID}</td>
+                  <td>{game.cheapest}$</td>
+                  <th>
+                    {/* <Link to="/details">
+                      <button className="btn btn-ghost btn-xs">Details</button>
+                    </Link> */}
+                    {/* You can open the modal using document.getElementById('ID').showModal() method */}
+                    <button
+                      className="btn"
+                      onClick={() =>
+                        document.getElementById("my_modal_3").showModal()
+                      }
+                    >
+                      view details
+                    </button>
+                    <dialog id="my_modal_3" className="modal">
+                      <div className="modal-box">
+                        <form method="dialog">
+                          {/* if there is a button in form, it will close the modal */}
+                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                            ✕
+                          </button>
+                        </form>
+                        <h3 className="font-bold text-lg">{game.external}</h3>
+                        <p className="py-4">
+                          Press ESC key or click on ✕ button to close
+                        </p>
+                      </div>
+                    </dialog>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+            {/* Table Footer */}
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Game ID</th>
+                <th>Cheapest Price</th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default VideoGame;
+
+.................................
+...............................
+.................
+
+import { useState, useEffect } from "react";
+import LoadingSpinner from "./LoadingSpinner";
+import Error from "./Error";
+
+const VideoGame = () => {
+  const [gameTitle, setGameTitle] = useState("");
+  const [searchedGame, setSearchedGame] = useState([]);
+  const [gameDeals, setGameDeals] = useState([]);
+  const [id, setId] = useState(1);
+  const [loading, setLoading] = useState(false); // For loading state
+  const [error, setError] = useState(null); // For error handling
+  const [selectedGame, setSelectedGame] = useState(null); // To store selected game details
+
+  const searchGame = () => {
+    setLoading(true); // Start loading
+    setError(null); // Reset error state
+    fetch(`https://www.cheapshark.com/api/1.0/games?title=${gameTitle}&limit=4`)
+      .then((response) => response.json())
+      .then((data) => {
+        setSearchedGame(data);
+        setLoading(false); // End loading
+      })
+      .catch((err) => {
+        setError("Something went wrong. Please try again.");
+        setLoading(false); // End loading
+      });
+  };
+
+  useEffect(() => {
+    setLoading(true); // Start loading
+    setError(null); // Reset error state
+    fetch(
+      `https://www.cheapshark.com/api/1.0/deals?storeID=${id}&upperPrice=10&pageSize=10`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setGameDeals(data);
+        setLoading(false); // End loading
+      })
+      .catch((err) => {
+        setError(true);
+        setLoading(false); // End loading
+      });
+  }, [id]);
+
+  return (
+    <>
+      <div className="overflow-x-auto">
+        <input
+          type="text"
+          placeholder="Search for a game..."
+          onChange={(e) => setGameTitle(e.target.value)}
+        />
+        <button onClick={searchGame}>Search</button>
+
+        {/* Display error message if any */}
+        {error && <Error />}
+
+        {/* Display loading spinner */}
+        {loading && <LoadingSpinner />}
+
+        {!loading && !error && (
+          <table className="table">
+            {/* Table Head */}
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Game ID</th>
+                <th>Cheapest Price</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Loop through searchedGame data */}
+              {searchedGame.map((game) => (
+                <tr key={game.gameID}>
+                  <th>
+                    <input type="checkbox" className="checkbox" />
+                  </th>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img src={game.thumb} alt={game.external} />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">{game.external}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{game.gameID}</td>
+                  <td>{game.cheapest}$</td>
+                  <th>
+                    {/* Set selected game and open the modal */}
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        setSelectedGame(game);
+                        document.getElementById("my_modal_3").showModal();
+                      }}
+                    >
+                      View Details
+                    </button>
+                    {/* Modal */}
+                    <dialog id="my_modal_3" className="modal">
+                      <div className="modal-box">
+                        <form method="dialog">
+                          {/* Close button for modal */}
+                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                            ✕
+                          </button>
+                        </form>
+                        {selectedGame && (
+                          <>
+                            <h3 className="font-bold text-lg">
+                              {selectedGame.external}
+                            </h3>
+                            <p className="py-4">
+                              Cheapest price: {selectedGame.cheapest}$
+                            </p>
+                          </>
+                        )}
+                        <p className="py-4">
+                          Press ESC key or click on ✕ button to close
+                        </p>
+                      </div>
+                    </dialog>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+            {/* Table Footer */}
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Game ID</th>
+                <th>Cheapest Price</th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default VideoGame;
