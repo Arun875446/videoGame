@@ -26,8 +26,6 @@ const VideoGame = () => {
       });
   };
 
-  
-
   return (
     <>
       <div className="overflow-x-auto">
@@ -40,7 +38,7 @@ const VideoGame = () => {
           />
 
           <button onClick={searchGame} className="btn join-item rounded-r-full">
-            Search
+            Search for a game
           </button>
         </div>
 
